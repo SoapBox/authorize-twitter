@@ -1,0 +1,29 @@
+{
+    "name": "soapbox/authorize-twitter",
+    "description": "Twitter authorization strategy for SoapBox/Authorize.",
+    "keywords": ["authentication", "oauth", "twitter"],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Jaspaul Bola",
+            "email": "jaspaul.b@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:soapbox/authorize.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "ruudk/twitter-oauth": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "SoapBox\\AuthorizeTwitter": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
