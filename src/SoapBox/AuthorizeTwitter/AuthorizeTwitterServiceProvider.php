@@ -1,6 +1,7 @@
 <?php namespace SoapBox\AuthorizeTwitter;
 
 use Illuminate\Support\ServiceProvider;
+use SoapBox\Authorize\StrategyFactory;
 
 class AuthorizeTwitterServiceProvider extends ServiceProvider {
 
@@ -12,13 +13,23 @@ class AuthorizeTwitterServiceProvider extends ServiceProvider {
 	protected $defer = false;
 
 	/**
+	 * Bootstrap the application events.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		$this->package('soapbox/authorize-twitter');
+	}
+
+	/**
 	 * Register the service provider.
 	 *
 	 * @return void
 	 */
 	public function register()
 	{
-		//
+		StrategyFactory::register('twitter', 'SoapBox\AuthorizeTwitter\TwitterStrategy');
 	}
 
 	/**
