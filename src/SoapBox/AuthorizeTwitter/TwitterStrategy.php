@@ -1,8 +1,12 @@
 <?php namespace SoapBox\AuthorizeTwitter;
 
 use TwitterOAuth\OAuth\Api;
+use SoapBox\Authorize\Helpers;
+use SoapBox\Authorize\User;
+use SoapBox\Authorize\Contact;
 use SoapBox\Authorize\Exceptions\MissingArgumentsException;
-use SoapBox\Authorize\Exceptions\AuthorizationException;
+use SoapBox\Authorize\Exceptions\AuthenticationException;
+use SoapBox\Authorize\Strategies\SingleSignOnStrategy;
 
 class TwitterStrategy extends SingleSignOnStrategy {
 
