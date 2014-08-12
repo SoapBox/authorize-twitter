@@ -1,6 +1,6 @@
 <?php namespace SoapBox\AuthorizeTwitter;
 
-use TwitterOAuth\OAuth\Api;
+use TwitterOAuth\Api;
 use SoapBox\Authorize\Helpers;
 use SoapBox\Authorize\User;
 use SoapBox\Authorize\Contact;
