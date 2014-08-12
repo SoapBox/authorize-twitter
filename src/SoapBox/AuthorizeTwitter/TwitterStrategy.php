@@ -25,6 +25,8 @@ class TwitterStrategy extends SingleSignOnStrategy {
 			$parameters['consumer_key'],
 			$parameters['consumer_secret']
 		);
+
+		$this->twitter->host = 'https://api.twitter.com/1.1/';
 	}
 
 	public function login($parameters = array()) {
