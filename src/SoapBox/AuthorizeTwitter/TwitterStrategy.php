@@ -56,7 +56,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 			throw new AuthorizationException();
 		}
 
-		$accessToken = $parameters['accessToken'];
+		$accessToken = json_decode($parameters['accessToken']);
 
 		$this->twitter->setTokens($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
 
@@ -65,7 +65,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 		$user = new User;
 		$user->id = $response->id;
 		$user->displayName = $response->screen_name;
-		$user->accessToken = $accessToken;
+		$user->accessToken = json_encode($accessToken);
 		$user->firstname = $response->name;
 
 		return $user;
@@ -76,7 +76,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 			throw new AuthorizationException();
 		}
 
-		$accessToken = $parameters['accessToken'];
+		$accessToken = json_decode($parameters['accessToken']);
 
 		$this->twitter->setTokens($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
 
@@ -113,7 +113,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 		unset($_SESSION['oauth_token']);
 		unset($_SESSION['oauth_token_secret']);
 
-		return $this->getUser(['accessToken' => $accessToken]);
+		return $this->getUser(['accessToken' => json_encode($accessToken)]);
 	}
 
 }
