@@ -58,7 +58,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 		$accessToken = json_decode($parameters['accessToken']);
 
-		$this->twitter->setTokens($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
+		$this->twitter->setTokens($accessToken->oauth_token, $accessToken->oauth_token_secret);
 
 		$response = $this->twitter->get('account/verify_credentials');
 
@@ -78,7 +78,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 		$accessToken = json_decode($parameters['accessToken']);
 
-		$this->twitter->setTokens($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
+		$this->twitter->setTokens($accessToken->oauth_token, $accessToken->oauth_token_secret);
 
 		$response = $this->twitter->get('friends/ids');
 
