@@ -12,7 +12,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 	private $twitter;
 
-	public function __construct($settings = array()) {
+	public function __construct($parameters = array()) {
 		session_start();
 		if( !isset($parameters['consumer_key']) ||
 			!isset($parameters['consumer_secret']) ) {
