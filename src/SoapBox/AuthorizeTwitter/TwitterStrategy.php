@@ -45,6 +45,8 @@ class TwitterStrategy extends SingleSignOnStrategy {
 	}
 
 	public function login($parameters = array()) {
+		$store = TwitterStrategy::$store;
+
 		if ( !isset($parameters['redirect_url']) ) {
 			throw new MissingArgumentsException(
 				'redirect_url is required'
@@ -53,8 +55,9 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 		$requestToken = $this->twitter->getRequestToken($parameters['redirect_url']);
 
-		TwitterStrategy::$store('twitter.oauth_token', $requestToken['oauth_token']);
-		TwitterStrategy::$store('twitter.oauth_token_secret', $requestToken['oauth_token_secret']);
+		$store('twitter.oauth_token', $requestToken['oauth_token']);
+		$store('twitter.oauth_token_secret', $requestToken['oauth_token_secret']);
+
 		$token = $requestToken['oauth_token'];
 
 		switch ($this->twitter->http_code) {
@@ -123,8 +126,10 @@ class TwitterStrategy extends SingleSignOnStrategy {
 	}
 
 	public function endpoint($parameters = array()) {
-		$token = TwitterStrategy::$load('twitter.oauth_token');
-		$secret = TwitterStrategy::$load('twitter.oauth_token_secret');
+		$load = TwitterStrategy::$load;
+
+		$token = $load('twitter.oauth_token');
+		$secret = $load('twitter.oauth_token_secret');
 
 		if (empty($token) || empty($secret)) {
 			throw new AuthorizationException();
