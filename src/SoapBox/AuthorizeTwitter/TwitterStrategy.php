@@ -12,8 +12,10 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 	private $twitter;
 
-	public function __construct($parameters = array()) {
-		session_start();
+	public static $store = null;
+	public static $load = null;
+
+	public function __construct($parameters = array(), $store = null, $load = null) {
 		if( !isset($parameters['consumer_key']) ||
 			!isset($parameters['consumer_secret']) ) {
 			throw new MissingArgumentsException(
@@ -25,6 +27,19 @@ class TwitterStrategy extends SingleSignOnStrategy {
 			$parameters['consumer_key'],
 			$parameters['consumer_secret']
 		);
+
+		if ($store != null && $load != null) {
+			TwitterStrategy::$store = $store;
+			TwitterStrategy::$load = $load;
+		} else {
+			session_start();
+			TwitterStrategy::$store = function($key, $value) {
+				$_SESSION[$key] = $value;
+			};
+			TwitterStrategy::$load = function($key) {
+				return $_SESSION[$key];
+			};
+		}
 
 		$this->twitter->host = 'https://api.twitter.com/1.1/';
 	}
@@ -38,8 +53,9 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 		$requestToken = $this->twitter->getRequestToken($parameters['redirect_url']);
 
-		$_SESSION['oauth_token'] = $token = $requestToken['oauth_token'];
-		$_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
+		TwitterStrategy::$store('twitter.oauth_token', $requestToken['oauth_token']);
+		TwitterStrategy::$store('twitter.oauth_token_secret', $requestToken['oauth_token_secret']);
+		$token = $requestToken['oauth_token'];
 
 		switch ($this->twitter->http_code) {
 			case 200:
@@ -107,11 +123,15 @@ class TwitterStrategy extends SingleSignOnStrategy {
 	}
 
 	public function endpoint($parameters = array()) {
-		$this->twitter->setTokens($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
-		$accessToken = $this->twitter->getAccessToken($_REQUEST['oauth_verifier']);
+		$token = TwitterStrategy::$load('twitter.oauth_token');
+		$secret = TwitterStrategy::$load('twitter.oauth_token_secret');
 
-		unset($_SESSION['oauth_token']);
-		unset($_SESSION['oauth_token_secret']);
+		if (empty($token) || empty($secret)) {
+			throw new AuthorizationException();
+		}
+
+		$this->twitter->setTokens($token, $secret);
+		$accessToken = $this->twitter->getAccessToken($_REQUEST['oauth_verifier']);
 
 		return $this->getUser(['accessToken' => json_encode($accessToken)]);
 	}
