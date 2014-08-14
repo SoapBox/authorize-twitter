@@ -56,7 +56,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 		$requestToken = $this->twitter->getRequestToken($parameters['redirect_url']);
 
 		$store('twitter.oauth_token', $requestToken['oauth_token']);
-		$store('twitter.oauth_token_secret', $requestToken['oauth_token_secret']);
+		$store('twitter.oauth_token_secret', $requestToken['oauth_token_secret'], true);
 
 		$token = $requestToken['oauth_token'];
 
