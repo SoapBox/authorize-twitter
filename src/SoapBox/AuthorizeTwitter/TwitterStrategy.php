@@ -62,7 +62,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 		switch ($this->twitter->http_code) {
 			case 200:
-				Helpers::redirect($this->twitter->getAuthorizeURL($token));
+				Helpers::redirect($this->twitter->getAuthorizeURL($token, true));
 				break;
 			default:
 				throw new AuthorizationException();
