@@ -85,7 +85,9 @@ class TwitterStrategy extends SingleSignOnStrategy {
 		$user->id = $response->id;
 		$user->displayName = $response->screen_name;
 		$user->accessToken = json_encode($accessToken);
-		$user->firstname = $response->name;
+		$name = explode(' ', $response->name, 2);
+		$user->firstname = $name[0];
+		$user->lastname = $name[1];
 
 		return $user;
 	}
