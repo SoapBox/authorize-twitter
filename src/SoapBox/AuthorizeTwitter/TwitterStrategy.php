@@ -65,14 +65,14 @@ class TwitterStrategy extends SingleSignOnStrategy {
 				Helpers::redirect($this->twitter->getAuthorizeURL($token, true));
 				break;
 			default:
-				throw new AuthorizationException();
+				throw new AuthenticationException();
 		}
 
 	}
 
 	public function getUser($parameters = array()) {
 		if ( !isset($parameters['accessToken']) ) {
-			throw new AuthorizationException();
+			throw new AuthenticationException();
 		}
 
 		$accessToken = json_decode($parameters['accessToken']);
@@ -97,7 +97,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 
 	public function getFriends($parameters = array()) {
 		if ( !isset($parameters['accessToken']) ) {
-			throw new AuthorizationException();
+			throw new AuthenticationException();
 		}
 
 		$accessToken = json_decode($parameters['accessToken']);
@@ -137,7 +137,7 @@ class TwitterStrategy extends SingleSignOnStrategy {
 		$secret = $load('twitter.oauth_token_secret');
 
 		if (empty($token) || empty($secret)) {
-			throw new AuthorizationException();
+			throw new AuthenticationException();
 		}
 
 		$this->twitter->setTokens($token, $secret);
